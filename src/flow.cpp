@@ -183,9 +183,9 @@ void Flow::showPvDetails()
   lv_obj_set_style_pad_all(cont, 0, LV_PART_MAIN);
 
   lv_obj_t *table = lv_table_create(cont);
+  lv_obj_set_style_border_side(table, LV_BORDER_SIDE_NONE, LV_PART_MAIN);
   lv_table_set_column_width(table, 0, 220);
   lv_table_set_column_width(table, 1, 100);
-  lv_obj_set_style_pad_hor(table, 0, LV_PART_ITEMS);
 
   lv_table_set_cell_value(table, 0, 0, "PV voltage (V)");
   lv_table_set_cell_value(table, 0, 1, "Value");
