@@ -12,7 +12,10 @@
 #include "lvgl.h"
 #include "app_hal.h"
 
-#include "demos/lv_demos.h"
+#include "style.h"
+#include "data.h"
+#include "tabs.h"
+#include "flow.h"
 
 int main(void)
 {
@@ -20,7 +23,11 @@ int main(void)
 
 	hal_setup();
 
-  lv_demo_widgets();
+  initStyles();
 
-	hal_loop();
+  Data *data = new Data();
+  Tabs *tabs = new Tabs(lv_screen_active());
+  Flow *flow = new Flow(tabs->tabFlow(), data);
+
+  hal_loop();
 }
