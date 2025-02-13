@@ -7,56 +7,49 @@
 #error "LV_FONT_MONTSERRAT_24 is required. Enable it in lv_conf.h."
 #endif
 
-class DetailsWindow
-{
-public:
-  DetailsWindow(char const *title);
-  ~DetailsWindow();
-  void addParameter(char const *name, float value, char const *format);
-private:
-  lv_obj_t *m_win;
-  lv_obj_t *m_table;
-  uint32_t m_nextLineIndex;
-};
+#define SCREEN_WIDTH 480
+#define SCREEN_HEIGHT 320
+#define BACKGROUND_TOP 10
+#define PANEL_TOP 
+#define BUTTONS_TOP 250
+#define BUTTON1_LEFT 8
+#define BUTTON2_LEFT 126
+#define BUTTON3_LEFT 244
+#define BUTTON4_LEFT 362
+#define BUTTONS_WIDTH 110
+#define BUTTONS_HEIGHT 60
+#define FLOWCOLD_TOP 159
+#define FLOWHOT_TOP 144
+#define FLOW_LEFT_START 78
+#define FLOW_LEFT_STOP 140
 
 class Flow
 {
 public:
   Flow(lv_obj_t *parent, Data *data);
-  void setPvStatus(int32_t status);
-  void setGridStatus(int32_t status);
-  void setInverterStatus(int32_t status);
-  void setBatteryStatus(int32_t status);
-  void setLoadStatus(int32_t status);
-  void showPvDetails();
-  void showGridDetails();
-  void showInverterDetails();
-  void showBatteryDetails();
-  void showLoadDetails();
-  void redrawElectrons();
+  void update();
+  void redraw();
+
 private:
   Data *m_data;
   lv_obj_t *m_parent;
-  lv_obj_t *m_pvImage;
-  lv_obj_t *m_pvLabel;
-  lv_obj_t *m_gridImage;
-  lv_obj_t *m_gridLabel;
-  lv_obj_t *m_inverterImage;
-  lv_obj_t *m_mainLabel;
-  lv_obj_t *m_batteryImage;
-  lv_obj_t *m_batteryLabel;
-  lv_obj_t *m_loadImage;
-  lv_obj_t *m_loadLabel;
-  lv_obj_t *m_batteryFlowImage;
-  lv_obj_t *m_batteryElectronImage;
-  lv_obj_t *m_gridFlowImage;
-  lv_obj_t *m_gridElectronImage;
-  lv_obj_t *m_pvFlowImage;
-  lv_obj_t *m_pvElectronImage;
-  lv_obj_t *m_loadFlowImage;
-  lv_obj_t *m_loadElectronImage;
+  lv_obj_t *m_background;
+  lv_obj_t *m_heatHigh;
+  lv_obj_t *m_heatLow;
+  lv_obj_t *m_sun;
+  lv_obj_t *m_moon;
+  lv_obj_t *m_flowBackground;
+  lv_obj_t *m_flowHot;
+  lv_obj_t *m_flowCold;
+  lv_obj_t *m_turboButton;
+  lv_obj_t *m_settingsButton;
+  lv_obj_t *m_historyButton;
+  lv_obj_t *m_infoButton;
+  bool m_pump;
   uint32_t m_drawStep;
-  void updateOpacity(lv_obj_t *obj, bool opaque);
+  void setNight(bool night);
+  void setHeat(uint8_t heat);
+  void setPump(bool pump);
 };
 
 #endif

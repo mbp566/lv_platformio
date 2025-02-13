@@ -14,7 +14,7 @@
 
 #include "style.h"
 #include "data.h"
-#include "tabs.h"
+#include "data.h"
 #include "flow.h"
 
 int main(void)
@@ -26,8 +26,7 @@ int main(void)
   initStyles();
 
   Data *data = new Data();
-  Tabs *tabs = new Tabs(lv_screen_active());
-  Flow *flow = new Flow(tabs->tabFlow(), data);
+  Flow *flow = new Flow(lv_screen_active(), data);
 
   hal_loop();
 }
