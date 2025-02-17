@@ -1,6 +1,7 @@
 #ifndef FLOW_H
 #define FLOW_H
 
+#include "screen.h"
 #include "data.h"
 
 #if LV_FONT_MONTSERRAT_24 == 0
@@ -23,16 +24,15 @@
 #define FLOW_LEFT_START 78
 #define FLOW_LEFT_STOP 140
 
-class Flow
+class Flow : public Screen
 {
 public:
-  Flow(lv_obj_t *parent, Data *data);
+  Flow(Data *data);
+  virtual void show();
   void update();
   void redraw();
-
 private:
   Data *m_data;
-  lv_obj_t *m_parent;
   lv_obj_t *m_background;
   lv_obj_t *m_heatHigh;
   lv_obj_t *m_heatLow;

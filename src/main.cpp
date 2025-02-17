@@ -26,7 +26,8 @@ int main(void)
   initStyles();
 
   Data *data = new Data();
-  Flow *flow = new Flow(lv_screen_active(), data);
+  Flow *flow = new Flow(data);
+  flow->show();
 
   hal_loop();
 }

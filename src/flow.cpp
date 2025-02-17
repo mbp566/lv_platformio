@@ -48,52 +48,50 @@ void infoButtonClicked(lv_event_t *event)
   Flow *flow = (Flow *)lv_event_get_user_data(event);
 }
 
-Flow::Flow(lv_obj_t *parent, Data *data) : m_parent(parent),
-                                           m_data(data),
-                                           m_pump(false)
+Flow::Flow(Data *data) :
+  Screen(),
+  m_data(data),
+  m_pump(false)
 {
-  lv_obj_set_style_margin_all(m_parent, 0, LV_PART_MAIN);
-  lv_obj_set_style_pad_all(m_parent, 0, LV_PART_MAIN);
-
-  m_flowBackground = lv_image_create(m_parent);
+  m_flowBackground = lv_image_create(m_root);
   lv_image_set_src(m_flowBackground, &flow_background);
   lv_obj_set_pos(m_flowBackground, 133, 142);
 
-  m_flowHot = lv_image_create(m_parent);
+  m_flowHot = lv_image_create(m_root);
   lv_image_set_src(m_flowHot, &flow_hot);
   lv_obj_add_flag(m_flowHot, LV_OBJ_FLAG_HIDDEN);
 
-  m_flowCold = lv_image_create(m_parent);
+  m_flowCold = lv_image_create(m_root);
   lv_image_set_src(m_flowCold, &flow_cold);
   lv_obj_add_flag(m_flowCold, LV_OBJ_FLAG_HIDDEN);
 
-  m_background = lv_image_create(m_parent);
+  m_background = lv_image_create(m_root);
   lv_image_set_src(m_background, &background);
   lv_obj_set_pos(m_background, 0, 0);
 
-  m_sun = lv_image_create(m_parent);
+  m_sun = lv_image_create(m_root);
   lv_image_set_src(m_sun, &sun);
   lv_obj_set_pos(m_sun, 39, 14);
   lv_obj_add_flag(m_sun, LV_OBJ_FLAG_HIDDEN);
 
-  m_moon = lv_image_create(m_parent);
+  m_moon = lv_image_create(m_root);
   lv_image_set_src(m_moon, &moon);
   lv_obj_set_pos(m_moon, 56, 31);
   lv_obj_add_flag(m_moon, LV_OBJ_FLAG_HIDDEN);
 
-  m_heatHigh = lv_image_create(m_parent);
+  m_heatHigh = lv_image_create(m_root);
   lv_image_set_src(m_heatHigh, &heat_on);
   lv_obj_set_pos(m_heatHigh, 368, 33);
   lv_obj_add_flag(m_heatHigh, LV_OBJ_FLAG_HIDDEN);
 
-  m_heatLow = lv_image_create(m_parent);
+  m_heatLow = lv_image_create(m_root);
   lv_image_set_src(m_heatLow, &heat_on);
   lv_obj_set_pos(m_heatLow, 368, 146);
   lv_obj_add_flag(m_heatLow, LV_OBJ_FLAG_HIDDEN);
 
   lv_obj_t *label;
 
-  m_turboButton = lv_button_create(m_parent);
+  m_turboButton = lv_button_create(m_root);
   lv_obj_set_pos(m_turboButton, BUTTON1_LEFT, BUTTONS_TOP);
   lv_obj_set_width(m_turboButton, BUTTONS_WIDTH);
   lv_obj_set_height(m_turboButton, BUTTONS_HEIGHT);
@@ -103,7 +101,7 @@ Flow::Flow(lv_obj_t *parent, Data *data) : m_parent(parent),
   lv_label_set_text(label, "Turbo");
   lv_obj_center(label);
 
-  m_settingsButton = lv_button_create(m_parent);
+  m_settingsButton = lv_button_create(m_root);
   lv_obj_set_pos(m_settingsButton, BUTTON2_LEFT, BUTTONS_TOP);
   lv_obj_set_width(m_settingsButton, BUTTONS_WIDTH);
   lv_obj_set_height(m_settingsButton, BUTTONS_HEIGHT);
@@ -112,7 +110,7 @@ Flow::Flow(lv_obj_t *parent, Data *data) : m_parent(parent),
   lv_label_set_text(label, "Settings");
   lv_obj_center(label);
 
-  m_historyButton = lv_button_create(m_parent);
+  m_historyButton = lv_button_create(m_root);
   lv_obj_set_pos(m_historyButton, BUTTON3_LEFT, BUTTONS_TOP);
   lv_obj_set_width(m_historyButton, BUTTONS_WIDTH);
   lv_obj_set_height(m_historyButton, BUTTONS_HEIGHT);
@@ -121,7 +119,7 @@ Flow::Flow(lv_obj_t *parent, Data *data) : m_parent(parent),
   lv_label_set_text(label, "History");
   lv_obj_center(label);
 
-  m_infoButton = lv_button_create(m_parent);
+  m_infoButton = lv_button_create(m_root);
   lv_obj_set_pos(m_infoButton, BUTTON4_LEFT, BUTTONS_TOP);
   lv_obj_set_width(m_infoButton, BUTTONS_WIDTH);
   lv_obj_set_height(m_infoButton, BUTTONS_HEIGHT);
@@ -137,6 +135,11 @@ Flow::Flow(lv_obj_t *parent, Data *data) : m_parent(parent),
       m_drawStep = 0;
   lv_timer_create(redrawTimerTick, 15, this);
   lv_timer_create(updateTimerTick, 5000, this);
+}
+
+void Flow::show()
+{
+  Screen::showAnimated(LV_SCR_LOAD_ANIM_OUT_BOTTOM);
 }
 
 void Flow::update()
@@ -162,11 +165,11 @@ void Flow::setNight(bool night)
   if (night) {
     lv_obj_add_flag(m_sun, LV_OBJ_FLAG_HIDDEN);
     lv_obj_remove_flag(m_moon, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_set_style_bg_color(m_parent, lv_color_hex(0x00327c), LV_PART_MAIN);
+    lv_obj_set_style_bg_color(m_root, lv_color_hex(0x00327c), LV_PART_MAIN);
   } else {
     lv_obj_remove_flag(m_sun, LV_OBJ_FLAG_HIDDEN);
     lv_obj_add_flag(m_moon, LV_OBJ_FLAG_HIDDEN);
-    lv_obj_set_style_bg_color(m_parent, lv_color_hex(0xffffff), LV_PART_MAIN);
+    lv_obj_set_style_bg_color(m_root, lv_color_hex(0xffffff), LV_PART_MAIN);
   }
 }
 
