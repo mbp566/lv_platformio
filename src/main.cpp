@@ -13,9 +13,8 @@
 #include "app_hal.h"
 
 #include "style.h"
-#include "data.h"
-#include "data.h"
-#include "flow.h"
+#include "client.h"
+#include "screen_flow.h"
 
 int main(void)
 {
@@ -23,11 +22,13 @@ int main(void)
 
 	hal_setup();
 
-  initStyles();
+  //initStyles();
 
-  Data *data = new Data();
-  Flow *flow = new Flow(data);
+  Client *client = new Client(1);
+  FlowScreen *flow = new FlowScreen(client);
   flow->show();
 
   hal_loop();
+
+
 }
