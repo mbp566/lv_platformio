@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <ctime>
 #include <widgets/image/lv_image.h>
 #include <widgets/button/lv_button.h>
 #include <widgets/buttonmatrix/lv_buttonmatrix.h>
@@ -98,11 +99,12 @@ FlowScreen::FlowScreen(Client *client) :
 
   m_home = this;
   m_settingsScreen = new SettingsScreen(client); // important: do not create it in initializer
+  m_historyScreen = new HistoryScreen(client); // important: do not create it in initializer
 }
 
 void FlowScreen::updateFlow()
 {
-  if (m_client->status()->pump())
+  if (m_client->status()->pump)
   {
     int32_t hotleft = lv_obj_get_style_x(m_flowHot, LV_PART_MAIN);
     hotleft = (hotleft < FLOW_LEFT_STOP) ? hotleft + 1 : FLOW_LEFT_START;
@@ -115,8 +117,15 @@ void FlowScreen::updateFlow()
 
 void FlowScreen::update()
 {
-  if (m_client->status()->night())
-  {
+  time_t rawTime(m_client->status()->time);
+  struct tm *timeInfo = localtime(&rawTime);
+  char timeString[128];
+  strftime(timeString, 128, "%Y/%m/%d %H:%M", timeInfo);
+  lv_label_set_text(m_title, timeString);
+
+  unsigned int hour = (m_client->status()->time % 86400) / 3600;
+  bool night = (hour > 18) || (hour < 6);
+  if (night) {
     lv_obj_add_flag(m_sun, LV_OBJ_FLAG_HIDDEN);
     lv_obj_remove_flag(m_moon, LV_OBJ_FLAG_HIDDEN);
     lv_obj_set_style_bg_color(m_root, lv_color_hex(0x00327c), LV_PART_MAIN);
@@ -125,20 +134,20 @@ void FlowScreen::update()
     lv_obj_add_flag(m_moon, LV_OBJ_FLAG_HIDDEN);
     lv_obj_set_style_bg_color(m_root, lv_color_hex(0xffffff), LV_PART_MAIN);
   }
-  lv_label_set_text_fmt(m_tempLow, "%.1f°C", m_client->status()->tempLow());
-  lv_label_set_text_fmt(m_tempHigh, "%.1f°C", m_client->status()->tempHigh());
-  lv_label_set_text_fmt(m_tempPanel, "%.1f°C", m_client->status()->tempPanel());
-  if (m_client->status()->heat() == HEAT_ON) {
+  lv_label_set_text_fmt(m_tempLow, "%.1f°C", m_client->status()->tempLow);
+  lv_label_set_text_fmt(m_tempHigh, "%.1f°C", m_client->status()->tempHigh);
+  lv_label_set_text_fmt(m_tempPanel, "%.1f°C", m_client->status()->tempPanel);
+  if (m_client->status()->heat == HEAT_ON) {
     lv_obj_add_flag(m_heatHigh, LV_OBJ_FLAG_HIDDEN);
     lv_obj_remove_flag(m_heatLow, LV_OBJ_FLAG_HIDDEN);
-  } else if (m_client->status()->heat() == HEAT_TURBO) {
+  } else if (m_client->status()->heat == HEAT_TURBO) {
     lv_obj_add_flag(m_heatLow, LV_OBJ_FLAG_HIDDEN);
     lv_obj_remove_flag(m_heatHigh, LV_OBJ_FLAG_HIDDEN);
   } else { // HEAT_OFF
     lv_obj_add_flag(m_heatHigh, LV_OBJ_FLAG_HIDDEN);
     lv_obj_add_flag(m_heatLow, LV_OBJ_FLAG_HIDDEN);
   }
-  if (m_client->status()->pump()) {
+  if (m_client->status()->pump) {
     lv_obj_set_pos(m_flowHot, FLOW_LEFT_STOP, FLOWHOT_TOP);
     lv_obj_set_pos(m_flowCold, FLOW_LEFT_START, FLOWCOLD_TOP);
     lv_obj_remove_flag(m_flowHot, LV_OBJ_FLAG_HIDDEN);
@@ -156,7 +165,7 @@ void FlowScreen::keyPressed(uint8_t key)
   } else if (key == KEY_2) {
     m_settingsScreen->show();
   } else if (key == KEY_3) {
-    //m_historyScreen->show();
+    m_historyScreen->show();
   } else if (key == KEY_4) {
     //m_infoScreen->show();
   }

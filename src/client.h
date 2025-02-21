@@ -9,22 +9,12 @@
 
 struct Status
 {
-public:
-  Status();
-  bool night();
-  float tempLow();
-  float tempHigh();
-  float tempPanel();
-  uint8_t heat();
-  bool pump();
-private:
-  bool m_night;
-  float m_tempLow;
-  float m_tempHigh;
-  float m_tempPanel;
-  uint8_t m_heat;
-  bool m_pump;
-  friend class Client;
+  unsigned int time;
+  float tempLow;
+  float tempHigh;
+  float tempPanel;
+  uint8_t heat;
+  bool pump;
 };
 
 class Settings
@@ -51,10 +41,15 @@ public:
   void updateStatus();
   Settings *settings();
   void updateSettings();
+  Status *history();
+  unsigned int nextHistoryIndex();
+
 private:
   uint8_t m_slaveId;
-  Status *m_status;
+  Status m_status;
   Settings *m_settings;
+  Status m_history[144];
+  unsigned int m_nextHistoryIndex;
 };
 
 #endif
