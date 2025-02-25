@@ -99,7 +99,8 @@ FlowScreen::FlowScreen(Client *client) :
 
   m_home = this;
   m_settingsScreen = new SettingsScreen(client); // important: do not create it in initializer
-  m_historyScreen = new HistoryScreen(client); // important: do not create it in initializer
+  m_historyScreen = new HistoryScreen(client);   // important: do not create it in initializer
+  m_infoScreen = new InfoScreen(client);   // important: do not create it in initializer
 }
 
 void FlowScreen::updateFlow()
@@ -167,7 +168,7 @@ void FlowScreen::keyPressed(uint8_t key)
   } else if (key == KEY_3) {
     m_historyScreen->show();
   } else if (key == KEY_4) {
-    //m_infoScreen->show();
+    m_infoScreen->show();
   }
 }
 

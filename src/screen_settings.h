@@ -21,9 +21,9 @@ private:
   lv_obj_t *m_cancelButton;
   uint8_t m_turboDuration;
   bool m_useElectricHeater;
-  uint8_t m_electricHeaterMinTankTemperature;
+  float m_electricHeaterMinTankTemperature;
   float m_electricHeaterMinBattery;
-  void makeLine(uint8_t index, const char *title, const char *value = NULL);
+  void makeLine(uint8_t index, const char *title);
   void disableCurrentControl();
   void enableControl(uint8_t index);
   void update();

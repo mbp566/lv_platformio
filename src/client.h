@@ -17,20 +17,22 @@ struct Status
   bool pump;
 };
 
-class Settings
+struct Settings
 {
-public:
-  Settings();
-  uint8_t turboDuration();
-  bool useElectricHeater();
-  float electricHeaterMinTankTemperature();
-  float electricHeaterMinBattery();
-private:
-  uint8_t m_turboDuration;
-  bool m_useElectricHeater;
-  uint8_t m_electricHeaterMinTankTemperature;
-  float m_electricHeaterMinBattery;
-  friend class Client;
+  uint8_t turboDuration;
+  bool useElectricHeater;
+  float electricHeaterMinTankTemperature;
+  float electricHeaterMinBattery;
+};
+
+struct Info
+{
+  char version[32];
+  char waterHeaterIP[16];
+  int8_t waterHeaterRSSI;
+  char remoteIP[16];
+  uint8_t remoteRSSI;
+  float batteryVoltage;
 };
 
 class Client
@@ -40,14 +42,18 @@ public:
   Status *status();
   void updateStatus();
   Settings *settings();
-  void updateSettings();
+  void loadSettings();
+  void saveSettings(uint8_t turboDuration, bool useElectricHeater, float electricHeaterMinTankTemperature, float electricHeaterMinBattery);
+  Info *info();
+  void updateInfo();
   Status *history();
   unsigned int nextHistoryIndex();
 
 private:
   uint8_t m_slaveId;
   Status m_status;
-  Settings *m_settings;
+  Settings m_settings;
+  Info m_info;
   Status m_history[144];
   unsigned int m_nextHistoryIndex;
 };

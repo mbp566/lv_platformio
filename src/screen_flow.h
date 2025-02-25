@@ -4,6 +4,7 @@
 #include "screen.h"
 #include "screen_settings.h"
 #include "screen_history.h"
+#include "screen_info.h"
 
 #if LV_FONT_MONTSERRAT_24 == 0
 #error "LV_FONT_MONTSERRAT_24 is required. Enable it in lv_conf.h."
@@ -45,6 +46,7 @@ private:
   lv_obj_t *m_infoButton;
   SettingsScreen *m_settingsScreen;
   HistoryScreen *m_historyScreen;
+  InfoScreen *m_infoScreen;
 };
 
 #endif

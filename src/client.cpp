@@ -1,40 +1,15 @@
 #include <math.h>
+#include <string.h>
+#include <stdio.h>
 #include "client.h"
-
-Settings::Settings()
-{
-}
-
-uint8_t Settings::turboDuration()
-{
-  return m_turboDuration;
-}
-
-bool Settings::useElectricHeater()
-{
-  return m_useElectricHeater;
-}
-
-float Settings::electricHeaterMinTankTemperature()
-{
-  return m_electricHeaterMinTankTemperature;
-}
-
-float Settings::electricHeaterMinBattery()
-{
-  return m_electricHeaterMinBattery;
-}
 
 Client::Client(uint8_t slaveId) :
   m_slaveId(slaveId),
-  m_settings(new Settings()),
   m_nextHistoryIndex(0)
 {
-  m_settings->m_turboDuration = 20;
-  m_settings->m_useElectricHeater = true;
-  m_settings->m_electricHeaterMinTankTemperature = 40.0f;
-  m_settings->m_electricHeaterMinBattery = 50.0f;
   updateStatus();
+  loadSettings();
+  updateInfo();
 
   for (unsigned int i = 0; i < 144; i++) {
     float k = (float)i / 144.0f;
@@ -70,12 +45,38 @@ void Client::updateStatus()
 
 Settings* Client::settings()
 {
-  return m_settings;
+  return &m_settings;
 }
 
-void Client::updateSettings()
+void Client::loadSettings()
 {
+  m_settings.turboDuration = 20;
+  m_settings.useElectricHeater = true;
+  m_settings.electricHeaterMinTankTemperature = 40.0f;
+  m_settings.electricHeaterMinBattery = 50.0f;
+}
 
+void Client::saveSettings(uint8_t turboDuration, bool useElectricHeater, float electricHeaterMinTankTemperature, float electricHeaterMinBattery)
+{
+  m_settings.turboDuration = turboDuration;
+  m_settings.useElectricHeater = useElectricHeater;
+  m_settings.electricHeaterMinTankTemperature = electricHeaterMinTankTemperature;
+  m_settings.electricHeaterMinBattery = electricHeaterMinBattery;
+}
+
+    Info *Client::info()
+{
+  return &m_info;
+}
+
+void Client::updateInfo()
+{
+  sprintf_s(m_info.version, 32, "%d.%d build %d", 1, 0, 586);
+  strcpy_s(m_info.waterHeaterIP, "192.168.0.2");
+  m_info.waterHeaterRSSI = -67;
+  strcpy_s(m_info.remoteIP, "192.168.0.3");
+  m_info.remoteRSSI = -55;
+  m_info.batteryVoltage = 49.8f;
 }
 
 Status* Client::history()
