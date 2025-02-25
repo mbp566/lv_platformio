@@ -21,7 +21,9 @@ private:
   lv_chart_series_t *m_tempPanel;
   void update();
   void drawGrid(lv_layer_t *layer);
-  void drawCurve(lv_layer_t *layer, lv_fpoint_t *pts, int pointCount, lv_color_t color);
+  void drawHeat(lv_layer_t *layer);
+  void drawPump(lv_layer_t *layer);
+  void drawCurve(lv_layer_t *layer, lv_fpoint_t *pts, int pointCount, lv_color_t color, const char *label, int offset);
   void doShow() override;
 };
 

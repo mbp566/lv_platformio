@@ -46,8 +46,8 @@ Client::Client(uint8_t slaveId) :
       (uint8_t)(i / 50),
       (i < 100)
     };
-    m_nextHistoryIndex = 120;
   }
+  m_nextHistoryIndex = 120;
 }
 
 Status* Client::status()
