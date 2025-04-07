@@ -29,7 +29,11 @@ protected:
 private:
   lv_obj_t *m_batteryStatus;
   lv_obj_t *m_wifiStatus;
-  lv_obj_t *m_background;
+  lv_obj_t *m_panel;
+  lv_obj_t *m_tank;
+  lv_obj_t *m_highTemp;
+  lv_obj_t *m_panelTemp;
+  lv_obj_t *m_lowTemp;
   lv_obj_t *m_heatHigh;
   lv_obj_t *m_heatLow;
   lv_obj_t *m_sun;

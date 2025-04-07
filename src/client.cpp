@@ -32,12 +32,12 @@ Status* Client::status()
 
 void Client::updateStatus()
 {
-  m_status.time = 1740160802;
+  m_status.time = 1740140802;
   m_status.tempLow = 15;
   m_status.tempHigh = 25;
   m_status.tempPanel = 40;
-  m_status.heat = HEAT_OFF;
-  m_status.pump = false;
+  m_status.heat = HEAT_ON;
+  m_status.pump = true;
 
   m_history[m_nextHistoryIndex] = m_status;
   m_nextHistoryIndex = (m_status.time % 1440) / 3 + 1;

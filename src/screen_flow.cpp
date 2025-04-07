@@ -7,7 +7,9 @@
 #include <widgets/label/lv_label.h>
 #include "screen_flow.h"
 
-LV_IMAGE_DECLARE(background);
+LV_IMAGE_DECLARE(panel);
+LV_IMAGE_DECLARE(tank);
+LV_IMAGE_DECLARE(tempindicator);
 LV_IMAGE_DECLARE(flow_background);
 LV_IMAGE_DECLARE(flow_cold);
 LV_IMAGE_DECLARE(flow_hot);
@@ -50,9 +52,25 @@ FlowScreen::FlowScreen(Client *client) :
   m_flowCold = lv_image_create(m_root);
   lv_image_set_src(m_flowCold, &flow_cold);
 
-  m_background = lv_image_create(m_root);
-  lv_image_set_src(m_background, &background);
-  lv_obj_set_pos(m_background, 0, 34);
+  m_panel = lv_image_create(m_root);
+  lv_image_set_src(m_panel, &panel);
+  lv_obj_set_pos(m_panel, 3, 131);
+
+  m_tank = lv_image_create(m_root);
+  lv_image_set_src(m_tank, &tank);
+  lv_obj_set_pos(m_tank, 303, 38);
+
+  m_highTemp = lv_image_create(m_root);
+  lv_image_set_src(m_highTemp, &tempindicator);
+  lv_obj_set_pos(m_highTemp, 166, 38);
+
+  m_panelTemp = lv_image_create(m_root);
+  lv_image_set_src(m_panelTemp, &tempindicator);
+  lv_obj_set_pos(m_panelTemp, 166, 116);
+
+  m_lowTemp = lv_image_create(m_root);
+  lv_image_set_src(m_lowTemp, &tempindicator);
+  lv_obj_set_pos(m_lowTemp, 166, 207);
 
   m_sun = lv_image_create(m_root);
   lv_image_set_src(m_sun, &sun);
