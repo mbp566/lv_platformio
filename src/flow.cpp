@@ -186,68 +186,68 @@ Flow::Flow(lv_obj_t *parent, Data *data)
 
   m_pvImage = lv_image_create(parent);
   lv_image_set_src(m_pvImage, &pv);
-  lv_obj_set_pos(m_pvImage, 10, 5);
+  lv_obj_set_pos(m_pvImage, 0, 0);
   lv_obj_add_flag(m_pvImage, LV_OBJ_FLAG_CLICKABLE);
   lv_obj_add_event_cb(m_pvImage, onPvClicked, LV_EVENT_CLICKED, this);
 
   m_pvLabel = lv_label_create(parent);
-  lv_obj_set_pos(m_pvLabel, 70, 92);
-  lv_obj_set_width(m_pvLabel, 60);
+  lv_obj_set_pos(m_pvLabel, 105, 136);
+  lv_obj_set_width(m_pvLabel, 90);
   lv_label_set_text_fmt(m_pvLabel, "%.0fW", data->pv()->chargingPower());
   lv_obj_set_style_text_align(m_pvLabel, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN);
 
   m_gridImage = lv_image_create(parent);
   lv_image_set_src(m_gridImage, &grid);
-  lv_obj_set_pos(m_gridImage, 208, 5);
+  lv_obj_set_pos(m_gridImage, 320, 8);
   lv_obj_add_flag(m_gridImage, LV_OBJ_FLAG_CLICKABLE);
   lv_obj_add_event_cb(m_gridImage, onGridClicked, LV_EVENT_CLICKED, this);
 
   m_gridLabel = lv_label_create(parent);
-  lv_obj_set_pos(m_gridLabel, 190, 92);
-  lv_obj_set_width(m_gridLabel, 60);
+  lv_obj_set_pos(m_gridLabel, 285, 136);
+  lv_obj_set_width(m_gridLabel, 90);
   lv_label_set_text_fmt(m_gridLabel, "%.0fA", data->grid()->current());
   lv_obj_set_style_text_align(m_gridLabel, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN);
 
   m_inverterImage = lv_image_create(parent);
   lv_image_set_src(m_inverterImage, &inverter);
-  lv_obj_set_pos(m_inverterImage, 109, 65);
+  lv_obj_set_pos(m_inverterImage, 160, 81);
   lv_obj_add_flag(m_inverterImage, LV_OBJ_FLAG_CLICKABLE);
   lv_obj_add_event_cb(m_inverterImage, onInverterClicked, LV_EVENT_CLICKED, this);
 
   m_mainLabel = lv_label_create(parent);
-  lv_obj_set_pos(m_mainLabel, 115, 25);
-  lv_obj_set_width(m_mainLabel, 90);
+  lv_obj_set_pos(m_mainLabel, 178, 38);
+  lv_obj_set_width(m_mainLabel, 135);
   lv_obj_set_style_text_align(m_mainLabel, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN);
   lv_obj_set_style_text_font(m_mainLabel, &lv_font_montserrat_24, 0);
   lv_label_set_text_fmt(m_mainLabel, "%.0fV (%.0f%)", data->battery()->voltage(), data->battery()->soc());
 
   m_batteryImage = lv_image_create(parent);
   lv_image_set_src(m_batteryImage, &battery);
-  lv_obj_set_pos(m_batteryImage, 10, 125);
+  lv_obj_set_pos(m_batteryImage, 0, 162);
   lv_obj_add_flag(m_batteryImage, LV_OBJ_FLAG_CLICKABLE);
   lv_obj_add_event_cb(m_batteryImage, onBatteryClicked, LV_EVENT_CLICKED, this);
 
   m_batteryLabel = lv_label_create(parent);
-  lv_obj_set_pos(m_batteryLabel, 90, 147);
-  lv_obj_set_width(m_batteryLabel, 60);
+  lv_obj_set_pos(m_batteryLabel, 135, 221);
+  lv_obj_set_width(m_batteryLabel, 90);
   lv_label_set_text_fmt(m_batteryLabel, "%.0fA", data->battery()->current());
   lv_obj_set_style_text_align(m_batteryLabel, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN);
 
   m_loadImage = lv_image_create(parent);
   lv_image_set_src(m_loadImage, &load);
-  lv_obj_set_pos(m_loadImage, 208, 125);
+  lv_obj_set_pos(m_loadImage, 320, 162);
   lv_obj_add_flag(m_loadImage, LV_OBJ_FLAG_CLICKABLE);
   lv_obj_add_event_cb(m_loadImage, onLoadClicked, LV_EVENT_CLICKED, this);
 
   m_loadLabel = lv_label_create(parent);
-  lv_obj_set_pos(m_loadLabel, 170, 147);
-  lv_obj_set_width(m_loadLabel, 60);
+  lv_obj_set_pos(m_loadLabel, 255, 221);
+  lv_obj_set_width(m_loadLabel, 90);
   lv_label_set_text_fmt(m_loadLabel, "%.0fW", data->load()->apparentPower());
   lv_obj_set_style_text_align(m_loadLabel, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN);
 
   m_pvFlowImage = lv_image_create(parent);
   lv_image_set_src(m_pvFlowImage, &pv_flow);
-  lv_obj_set_pos(m_pvFlowImage, 61, 48);
+  lv_obj_set_pos(m_pvFlowImage, 93, 80);
 
   m_pvElectronImage = lv_animimg_create(parent);
   lv_animimg_set_src(m_pvElectronImage, (const void **)electronImages, 5);
@@ -258,7 +258,7 @@ Flow::Flow(lv_obj_t *parent, Data *data)
 
   m_gridFlowImage = lv_image_create(parent);
   lv_image_set_src(m_gridFlowImage, &grid_flow);
-  lv_obj_set_pos(m_gridFlowImage, 169, 48);
+  lv_obj_set_pos(m_gridFlowImage, 254, 80);
 
   m_gridElectronImage = lv_animimg_create(parent);
   lv_animimg_set_src(m_gridElectronImage, (const void **)electronImages, 5);
@@ -269,7 +269,7 @@ Flow::Flow(lv_obj_t *parent, Data *data)
 
   m_batteryFlowImage = lv_image_create(parent);
   lv_image_set_src(m_batteryFlowImage, &battery_flow);
-  lv_obj_set_pos(m_batteryFlowImage, 71, 113);
+  lv_obj_set_pos(m_batteryFlowImage, 107, 170);
 
   m_batteryElectronImage = lv_animimg_create(parent);
   lv_animimg_set_src(m_batteryElectronImage, (const void **)electronImages, 5);
@@ -280,7 +280,7 @@ Flow::Flow(lv_obj_t *parent, Data *data)
 
   m_loadFlowImage = lv_image_create(parent);
   lv_image_set_src(m_loadFlowImage, &load_flow);
-  lv_obj_set_pos(m_loadFlowImage, 162, 113);
+  lv_obj_set_pos(m_loadFlowImage, 243, 170);
 
   m_loadElectronImage = lv_animimg_create(parent);
   lv_animimg_set_src(m_loadElectronImage, (const void **)electronImages, 5);

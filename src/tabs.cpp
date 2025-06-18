@@ -8,6 +8,7 @@ Tabs::Tabs(lv_obj_t *parent)
 
   m_tv = lv_tabview_create(parent);
   lv_tabview_set_tab_bar_size(m_tv, HEADER_HEIGHT);
+  lv_tabview_set_tab_bar_position(m_tv, LV_DIR_BOTTOM);
 
   m_tabFlow = lv_tabview_add_tab(m_tv, "Flow");
   m_tabChart = lv_tabview_add_tab(m_tv, "Charts");
