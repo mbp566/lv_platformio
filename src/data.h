@@ -1,98 +1,71 @@
 #ifndef DATA_H
 #define DATA_H
 
-class PvData
+typedef struct
 {
-public:
-  PvData();
-  float voltage();
-  float chargingCurrent();
-  float chargingPower();
+  float voltage;
+  float current;
+  float power;
+} PvData;
 
-private:
-  float m_voltage;
-  float m_chargingCurrent;
-  float m_chargingPower;
-};
-
-class GridData
+typedef struct
 {
-public:
-  GridData();
-  float voltage();
-  float current();
-  float frequency();
+  float voltage;
+  float current;
+  float frequency;
+  float chargeCurrent;
+} GridData;
 
-private:
-  float m_voltage;
-  float m_current;
-  float m_frequency;
-};
-
-class InverterData
+typedef struct
 {
-public:
-  InverterData();
-  void update();
-  float busVoltage();
-  float pvChargingCurrent();
-  float mainsChargingCurrent();
-  float inverterCurrent();
-  float outputVoltage();
-  float outputFrequency();
+  float current;
+  float outputFrequency;
+  float temperatureAC;
+  float temperatureDC;
+  float temperatureTR;
+} InverterData;
 
-private:
-  float m_busVoltage;
-  float m_pvChargingCurrent;
-  float m_mainsChargingCurrent;
-  float m_inverterCurrent;
-  float m_outputVoltage;
-  float m_outputFrequency;
-};
-
-class BatteryData
+typedef struct
 {
-public:
-  BatteryData();
-  float voltage();
-  float current();
-  float soc();
+  float voltage;
+  float current;
+  float soc;
+} BatteryData;
 
-private:
-  float m_voltage;
-  float m_current;
-  float m_soc;
-};
-
-class LoadData
+typedef struct
 {
-public:
-  LoadData();
-  float current();
-  float apparentPower();
-  float loadRate();
+  float voltage;
+  float current;
+  float activePower;
+  float apparentPower;
+  float loadRate;
+} LoadData;
 
-private:
-  float m_current;
-  float m_apparentPower;
-  float m_loadRate;
-};
-
-class Data
+typedef struct
 {
-  public:
-    Data();
-    PvData *pv();
-    GridData *grid();
-    InverterData *inverter();
-    BatteryData *battery();
-    LoadData *load();
-  private:
-    PvData *m_pv;
-    GridData *m_grid;
-    InverterData *m_inverter;
-    BatteryData *m_battery;
-    LoadData *m_load;
-};
+  float pvDailyPowerGeneration;
+  float loadDailyPowerConsumption;
+  float batteryDailyCharge;
+  float batteryDailyDischarge;
+  float pvWeeklyPowerGeneration;
+  float loadWeeklyPowerConsumption;
+  float batteryWeeklyCharge;
+  float batteryWeeklyDischarge;
+  float pvTotalPowerGeneration;
+  float loadTotalPowerConsumption;
+  float batteryTotalCharge;
+  float batteryTotalDischarge;
+  float inverterTotalWorkTime;
+} Statistics;
+
+typedef struct
+{
+  PvData pv;
+  GridData grid;
+  InverterData inverter;
+  BatteryData battery;
+  LoadData load;
+  Statistics statistics;
+} Data;
 
 #endif
