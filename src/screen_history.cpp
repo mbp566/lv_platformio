@@ -52,7 +52,7 @@ void HistoryScreen::keyPressed(uint8_t key)
   hide();
 }
 
-void HistoryScreen::update(const Data &data)
+void HistoryScreen::update()
 {
   /*
   Status status;

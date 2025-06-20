@@ -27,7 +27,7 @@ void InfoScreen::keyPressed(uint8_t key)
   hide();
 }
 
-void InfoScreen::update(const Data &data)
+void InfoScreen::update()
 {
 }
 

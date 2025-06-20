@@ -1,18 +1,20 @@
 #include <widgets/label/lv_label.h>
 #include "screen_details.h"
 
+#include "data.h"
+
 DetailsScreen::DetailsScreen() :
   ListScreen(LINE_COUNT)
 {
   makeLine(PV_VOLTAGE, "PV voltage");
-  makeLine(PV_CURRENT, "PV charging current");
-  makeLine(PV_POWER, "PV charging power");
+  makeLine(PV_CURRENT, "PV current");
+  makeLine(PV_POWER, "PV power");
 
   makeLine(GRID_VOLTAGE, "Grid voltage");
   makeLine(GRID_CURRENT, "Grid current");
   makeLine(GRID_FREQUENCY, "Grid frequency");
-
   makeLine(GRID_CHARGE_CURRENT, "Grid charging current");
+
   makeLine(INVERTER_CURRENT, "Inverter current");
   makeLine(OUTPUT_FREQUENCY, "Output frequency");
   makeLine(TEMP_AC, "Temperature AC");
@@ -28,7 +30,7 @@ DetailsScreen::DetailsScreen() :
   makeLine(LOAD_ACTIVE_POWER, "Load active power");
   makeLine(LOAD_APPARENT_POWER, "Load apparent power");
   makeLine(LOAD_RATE, "Load rate");
-
+/*
   makeLine(PV_DAILY_POWER_GENERATION, "PV daily power generation");
   makeLine(LOAD_DAILY_POWER_CONSUMPTION, "Load daily power consumption");
   makeLine(BATTERY_DAILY_CHARGE, "Battery daily charge");
@@ -44,43 +46,36 @@ DetailsScreen::DetailsScreen() :
   makeLine(BATTERY_TOTAL_CHARGE, "Battery total charge");
   makeLine(BATTERY_TOTAL_DISCHARGE, "Battery total discharge");
   makeLine(INVERTER_TOTAL_WORK_TIME, "Inverter total work time");
-
-  lv_obj_t *footer = lv_obj_create(m_root);
-  lv_obj_add_style(footer, &lineStyle, LV_PART_MAIN);
-  lv_obj_set_flex_flow(footer, LV_FLEX_FLOW_ROW);
-  lv_obj_set_flex_align(footer, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
-  lv_obj_set_flex_grow(footer, 1);
-
-  makeKeypad(NULL, NULL, NULL, "Close");
+*/
 }
 
-void DetailsScreen::update(const Data &data)
+void DetailsScreen::update()
 {
-  updateLine(PV_VOLTAGE, 0.0, "%.1f V");
-  updateLine(PV_CURRENT, 0.0, "%.1f A");
-  updateLine(PV_POWER, 0.0, "%.0f W");
+  updateLine(PV_VOLTAGE, data.pv.voltage, "%.1f V");
+  updateLine(PV_CURRENT, data.pv.current, "%.1f A");
+  updateLine(PV_POWER, data.pv.power, "%d W");
 
-  updateLine(GRID_VOLTAGE, 0.0, "%.1f V");
-  updateLine(GRID_CURRENT, 0.0, "%.1f A");
-  updateLine(GRID_FREQUENCY, 0.0, "%.2f Hz");
+  updateLine(GRID_VOLTAGE, data.grid.voltage, "%.1f V");
+  updateLine(GRID_CURRENT, data.grid.current, "%.1f A");
+  updateLine(GRID_FREQUENCY, data.grid.frequency, "%.2f Hz");
+  updateLine(GRID_CHARGE_CURRENT, data.grid.chargeCurrent, "%.1f A");
 
-  updateLine(GRID_CHARGE_CURRENT, 0.0, "%.1f A");
-  updateLine(INVERTER_CURRENT, 0.0, "%.1f A");
-  updateLine(OUTPUT_FREQUENCY, 0.0, "%.2f Hz");
-  updateLine(TEMP_AC, 0.0, "%.1f °C");
-  updateLine(TEMP_DC, 0.0, "%.1f °C");
-  updateLine(TEMP_TR, 0.0, "%.1f °C");
+  updateLine(INVERTER_CURRENT, data.inverter.current, "%.1f A");
+  updateLine(OUTPUT_FREQUENCY, data.inverter.outputFrequency, "%.2f Hz");
+  updateLine(TEMP_AC, data.inverter.temperatureAC, "%.1f °C");
+  updateLine(TEMP_DC, data.inverter.temperatureDC, "%.1f °C");
+  updateLine(TEMP_TR, data.inverter.temperatureTR, "%.1f °C");
 
-  updateLine(BATTERY_VOLTAGE, 0.0, "%.1f V");
-  updateLine(BATTERY_CURRENT, 0.0, "%.1f A");
-  updateLine(BATTERY_SOC, 0.0, "%.0f %");
+  updateLine(BATTERY_VOLTAGE, data.battery.voltage, "%.1f V");
+  updateLine(BATTERY_CURRENT, data.battery.current, "%.1f A");
+  updateLine(BATTERY_SOC, data.battery.soc, "%d %%");
 
-  updateLine(LOAD_VOLTAGE, 0.0, "%.1f V");
-  updateLine(LOAD_CURRENT, 0.0, "%.1f A");
-  updateLine(LOAD_ACTIVE_POWER, 0.0, "%.1f A");
-  updateLine(LOAD_APPARENT_POWER, 0.0, "%.0f VA");
-  updateLine(LOAD_RATE, 0.0, "%.0f %");
-
+  updateLine(LOAD_VOLTAGE, data.load.voltage, "%.1f V");
+  updateLine(LOAD_CURRENT, data.load.current, "%.1f A");
+  updateLine(LOAD_ACTIVE_POWER, data.load.activePower, "%d A");
+  updateLine(LOAD_APPARENT_POWER, data.load.apparentPower, "%d VA");
+  updateLine(LOAD_RATE, data.load.loadRate, "%.0f %%");
+/*
   updateLine(PV_DAILY_POWER_GENERATION, 0.0, "%.1f kWh");
   updateLine(LOAD_DAILY_POWER_CONSUMPTION, 0.0, "%.1f kWh");
   updateLine(BATTERY_DAILY_CHARGE, 0.0, "%.1f Ah");
@@ -96,5 +91,10 @@ void DetailsScreen::update(const Data &data)
   updateLine(BATTERY_TOTAL_CHARGE, 0.0, "%.1f Ah");
   updateLine(BATTERY_TOTAL_DISCHARGE, 0.0, "%.1f Ah");
   updateLine(INVERTER_TOTAL_WORK_TIME, 0.0, "%d hours");
+  */
 }
 
+void DetailsScreen::doShow()
+{
+  lv_screen_load_anim(m_root, LV_SCR_LOAD_ANIM_OVER_TOP, 500, 0, false);
+}

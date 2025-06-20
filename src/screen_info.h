@@ -9,7 +9,7 @@ class InfoScreen : public Screen
 public:
   InfoScreen();
   void keyPressed(uint8_t key);
-  void update(const Data &data);
+  void update() override;
 private:
   using Line = struct {
     lv_obj_t *title;

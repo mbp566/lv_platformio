@@ -2,6 +2,7 @@
 #define FLOW_H
 
 #include "screen.h"
+#include "screen_statistics.h"
 #include "screen_history.h"
 #include "screen_details.h"
 #include "screen_info.h"
@@ -11,7 +12,7 @@ class FlowScreen : public Screen
 {
 public:
   FlowScreen();
-  void update(const Data &data);
+  void update() override; 
   void keyPressed(uint8_t key);
   void redrawElectrons();
 private:
@@ -21,8 +22,6 @@ private:
   lv_obj_t *m_gridLabel;
   lv_obj_t *m_inverterImage;
   lv_obj_t *m_mainLabel;
-  lv_obj_t *m_todayLabel;
-  lv_obj_t *m_totalLabel;
   lv_obj_t *m_batteryImage;
   lv_obj_t *m_batteryLabel;
   lv_obj_t *m_loadImage;
@@ -36,14 +35,14 @@ private:
   lv_obj_t *m_loadFlowImage;
   lv_obj_t *m_loadElectronImage;
   uint32_t m_drawStep;
+  StatisticsScreen *m_statisticsScreen;
   HistoryScreen *m_historyScreen;
   DetailsScreen *m_detailsScreen;
   InfoScreen *m_infoScreen;
-  void setPvStatus(int32_t status);
-  void setGridStatus(int32_t status);
-  void setInverterStatus(int32_t status);
-  void setBatteryStatus(int32_t status);
-  void setLoadStatus(int32_t status);
+  void enablePv(bool enable);
+  void enableGrid(bool enable);
+  void enableBattery(bool enable);
+  void enableLoad(bool enable);
   void updateOpacity(lv_obj_t *obj, bool opaque);
   void doShow() override;
 };

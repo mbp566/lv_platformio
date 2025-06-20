@@ -23,8 +23,8 @@ class HistoryScreen : public Screen
 public:
   HistoryScreen();
   ~HistoryScreen();
+  void update() override;
   void keyPressed(uint8_t key);
-  void update(const Data &data);
 private:
   /*
   Status m_history[144];

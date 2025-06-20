@@ -1,11 +1,13 @@
 #ifndef DATA_H
 #define DATA_H
 
+#include <stdint.h>
+
 typedef struct
 {
   float voltage;
   float current;
-  float power;
+  uint16_t power;
 } PvData;
 
 typedef struct
@@ -29,15 +31,15 @@ typedef struct
 {
   float voltage;
   float current;
-  float soc;
+  uint16_t soc;
 } BatteryData;
 
 typedef struct
 {
   float voltage;
   float current;
-  float activePower;
-  float apparentPower;
+  uint16_t activePower;
+  uint16_t apparentPower;
   float loadRate;
 } LoadData;
 
@@ -45,16 +47,16 @@ typedef struct
 {
   float pvDailyPowerGeneration;
   float loadDailyPowerConsumption;
-  float batteryDailyCharge;
-  float batteryDailyDischarge;
+  uint16_t batteryDailyCharge;
+  uint16_t batteryDailyDischarge;
   float pvWeeklyPowerGeneration;
   float loadWeeklyPowerConsumption;
-  float batteryWeeklyCharge;
-  float batteryWeeklyDischarge;
+  uint16_t batteryWeeklyCharge;
+  uint16_t batteryWeeklyDischarge;
   float pvTotalPowerGeneration;
   float loadTotalPowerConsumption;
-  float batteryTotalCharge;
-  float batteryTotalDischarge;
+  uint16_t batteryTotalCharge;
+  uint16_t batteryTotalDischarge;
   float inverterTotalWorkTime;
 } Statistics;
 
@@ -67,5 +69,7 @@ typedef struct
   LoadData load;
   Statistics statistics;
 } Data;
+
+extern Data data;
 
 #endif

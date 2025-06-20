@@ -4,7 +4,6 @@
 #include <stdint.h>
 #include <misc/lv_types.h>
 #include "screen.h"
-#include "data.h"
 
 #define PV_VOLTAGE 0
 #define PV_CURRENT 1
@@ -26,6 +25,7 @@
 #define LOAD_ACTIVE_POWER 17
 #define LOAD_APPARENT_POWER 18
 #define LOAD_RATE 19
+/*
 #define PV_DAILY_POWER_GENERATION 20
 #define LOAD_DAILY_POWER_CONSUMPTION 21
 #define BATTERY_DAILY_CHARGE 22
@@ -39,14 +39,16 @@
 #define BATTERY_TOTAL_CHARGE 30
 #define BATTERY_TOTAL_DISCHARGE 31
 #define INVERTER_TOTAL_WORK_TIME 32
-
-#define LINE_COUNT 33
+*/
+#define LINE_COUNT 20
 
 class DetailsScreen : public ListScreen
 {
 public:
   DetailsScreen();
-  void update(const Data &data);
+  void update() override;
+private:
+  void doShow() override;
 };
 
 #endif

@@ -48,12 +48,14 @@ public:
   Screen();
   virtual void show();
   static void hide();
+  virtual void update() = 0;
   virtual void keyPressed(uint8_t key);
   void debug(const char *msg);
 protected:
   lv_obj_t *m_root;
   lv_obj_t *m_header;
   lv_obj_t *m_keypad;
+  lv_obj_t *m_keypadLabels[4];
   lv_obj_t *m_title;
   static Screen *m_home;
   void makeKeypad(const char *key1, const char *key2, const char *key3, const char *key4);
@@ -69,9 +71,12 @@ public:
   virtual void keyPressed(uint8_t key);
 protected:
   lv_obj_t *m_list;
+  int m_topItem;
+  int m_itemCount;
   lv_obj_t **m_labels;
   void makeLine(uint8_t index, const char *title);
   void updateLine(uint8_t index, float value, char const *format);
+  void setTopItem(int item);
 };
 
 #endif

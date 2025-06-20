@@ -95,21 +95,17 @@ FlowScreen::FlowScreen() :
   lv_image_set_src(m_inverterImage, &inverter);
   lv_obj_set_pos(m_inverterImage, 160, 81);
 
+  lv_obj_t *label = lv_label_create(m_root);
+  lv_obj_set_pos(label, 133, 10);
+  lv_obj_set_width(label, 214);
+  lv_obj_set_style_text_align(label, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN);
+  lv_label_set_text(label, "Battery status:");
+
   m_mainLabel = lv_label_create(m_root);
-  lv_obj_set_pos(m_mainLabel, 133, 60);
+  lv_obj_set_pos(m_mainLabel, 133, 30);
   lv_obj_set_width(m_mainLabel, 214);
   lv_obj_set_style_text_align(m_mainLabel, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN);
   lv_obj_set_style_text_font(m_mainLabel, &lv_font_montserrat_32, 0);
-
-  m_todayLabel = lv_label_create(m_root);
-  lv_obj_set_pos(m_todayLabel, 133, 30);
-  lv_obj_set_width(m_todayLabel, 214);
-  lv_obj_set_style_text_align(m_todayLabel, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN);
-
-  m_totalLabel = lv_label_create(m_root);
-  lv_obj_set_pos(m_totalLabel, 133, 5);
-  lv_obj_set_width(m_totalLabel, 214);
-  lv_obj_set_style_text_align(m_totalLabel, LV_TEXT_ALIGN_CENTER, LV_PART_MAIN);
 
   // Battery
 
@@ -155,13 +151,10 @@ FlowScreen::FlowScreen() :
   lv_animimg_start(m_loadElectronImage);
   lv_obj_add_flag(m_loadElectronImage, LV_OBJ_FLAG_HIDDEN);
 
-  makeKeypad("History", NULL, NULL, "Details");
+  makeKeypad("Statistics", "History", "Details", "Information");
 
-  setPvStatus(1);
-  setGridStatus(0);
-  setInverterStatus(1);
-  setBatteryStatus(-1);
-  setLoadStatus(-1);
+  m_detailsScreen = new DetailsScreen();
+  m_statisticsScreen = new StatisticsScreen();
 
   m_home = this;
 
@@ -172,44 +165,70 @@ FlowScreen::FlowScreen() :
   lv_screen_load(m_root);
 }
 
-void FlowScreen::update(const Data &data)
+void FlowScreen::update()
 {
   lv_label_set_text_fmt(m_pvLabel, "%dW", data.pv.power);
   lv_label_set_text_fmt(m_gridLabel, "%.1fA", data.grid.current);
-  lv_label_set_text_fmt(m_mainLabel, "%.1fV (%d%)", data.battery.voltage, data.battery.soc);
-  lv_label_set_text_fmt(m_todayLabel, "Today: %.1fkWh", data.statistics.pvDailyPowerGeneration);
-  lv_label_set_text_fmt(m_totalLabel, "Total: %.1fkWh", data.statistics.pvTotalPowerGeneration);
+  lv_label_set_text_fmt(m_mainLabel, "%.1fV (%d%%)", data.battery.voltage, data.battery.soc);
   lv_label_set_text_fmt(m_batteryLabel, "%.1fA", data.battery.current);
   lv_label_set_text_fmt(m_loadLabel, "%dW", data.load.activePower);
+
+  enablePv(data.pv.power > 0);
+  enableGrid(data.grid.current > 0);
+  enableBattery(data.battery.current != 0);
+  enableLoad(data.load.activePower > 0);
+
+  m_statisticsScreen->update();
+  //m_historyScreen->update();
+  m_detailsScreen->update();
+  //m_infoScreen->update();
 }
 
-void FlowScreen::setPvStatus(int32_t status)
+void FlowScreen::enablePv(bool enable)
 {
-  updateOpacity(m_pvImage, status != 0);
-  updateOpacity(m_pvFlowImage, status != 0);
+  updateOpacity(m_pvImage, enable);
+  updateOpacity(m_pvFlowImage, enable);
+  if (!enable) {
+    lv_obj_add_flag(m_pvElectronImage, LV_OBJ_FLAG_HIDDEN);
+  } else {
+    lv_obj_remove_flag(m_pvElectronImage, LV_OBJ_FLAG_HIDDEN);
+  }
 }
 
-void FlowScreen::setGridStatus(int32_t status)
+void FlowScreen::enableGrid(bool enable)
 {
-  updateOpacity(m_gridImage, status != 0);
-  updateOpacity(m_gridFlowImage, status != 0);
+  updateOpacity(m_gridImage, enable);
+  updateOpacity(m_gridFlowImage, enable);
+  if (!enable)
+  {
+    lv_obj_add_flag(m_gridElectronImage, LV_OBJ_FLAG_HIDDEN);
+  }
+  else
+  {
+    lv_obj_remove_flag(m_gridElectronImage, LV_OBJ_FLAG_HIDDEN);
+  }
 }
 
-void FlowScreen::setInverterStatus(int32_t status)
+void FlowScreen::enableBattery(bool enable)
 {
-  updateOpacity(m_inverterImage, status != 0);
+  updateOpacity(m_batteryImage, enable);
+  updateOpacity(m_batteryFlowImage, enable);
+  if (!enable) {
+    lv_obj_add_flag(m_batteryElectronImage, LV_OBJ_FLAG_HIDDEN);
+  } else {
+    lv_obj_remove_flag(m_batteryElectronImage, LV_OBJ_FLAG_HIDDEN);
+  }
 }
 
-void FlowScreen::setBatteryStatus(int32_t status)
+void FlowScreen::enableLoad(bool enable)
 {
-  updateOpacity(m_batteryImage, status != 0);
-  updateOpacity(m_batteryFlowImage, status != 0);
-}
-
-void FlowScreen::setLoadStatus(int32_t status)
-{
-  updateOpacity(m_loadImage, status != 0);
-  updateOpacity(m_loadFlowImage, status != 0);
+  updateOpacity(m_loadImage, enable);
+  updateOpacity(m_loadFlowImage, enable);
+  if (!enable) {
+    lv_obj_add_flag(m_loadElectronImage, LV_OBJ_FLAG_HIDDEN);
+  } else {
+    lv_obj_remove_flag(m_loadElectronImage, LV_OBJ_FLAG_HIDDEN);
+  }
 }
 
 void FlowScreen::updateOpacity(lv_obj_t *obj, bool opaque)
@@ -225,25 +244,27 @@ void FlowScreen::redrawElectrons()
     lv_obj_set_pos(m_pvElectronImage, pvElectronAnim.positions[step].x, pvElectronAnim.positions[step].y);
   }
   if (!lv_obj_has_flag(m_gridElectronImage, LV_OBJ_FLAG_HIDDEN)) {
-    uint32_t step = m_drawStep % gridElectronAnim.steps;
+    uint32_t step = (m_drawStep + 70) % gridElectronAnim.steps;
     lv_obj_set_pos(m_gridElectronImage, gridElectronAnim.positions[step].x, gridElectronAnim.positions[step].y);
   }
   if (!lv_obj_has_flag(m_batteryElectronImage, LV_OBJ_FLAG_HIDDEN)) {
-    uint32_t step = m_drawStep % batteryElectronAnim.steps;
-    lv_obj_set_pos(m_batteryElectronImage, batteryElectronAnim.positions[step].x, batteryElectronAnim.positions[step].y);
+    uint32_t step = (m_drawStep + 45) % batteryElectronAnim.steps;
+    if (data.battery.current < 0) {
+      step = batteryElectronAnim.steps - step;
+    }
+      lv_obj_set_pos(m_batteryElectronImage, batteryElectronAnim.positions[step].x, batteryElectronAnim.positions[step].y);
   }
   if (!lv_obj_has_flag(m_loadElectronImage, LV_OBJ_FLAG_HIDDEN)) {
-    uint32_t step = m_drawStep % loadElectronAnim.steps;
+    uint32_t step = (m_drawStep + 130) % loadElectronAnim.steps;
     lv_obj_set_pos(m_loadElectronImage, loadElectronAnim.positions[step].x, loadElectronAnim.positions[step].y);
   }
-
   m_drawStep++;
 }
 
 void FlowScreen::keyPressed(uint8_t key)
 {
   if (key == KEY_1) {
-    // we are already on this screen
+    m_statisticsScreen->show();
   } else if (key == KEY_2) {
     m_historyScreen->show();
   } else if (key == KEY_3) {
