@@ -33,12 +33,6 @@ const lv_image_dsc_t *electronImages[5] = {
   &spark4
 };
 
-void timerCallback(lv_timer_t *timer)
-{
-  FlowScreen *flow = (FlowScreen*)lv_timer_get_user_data(timer);
-  flow->redrawElectrons();
-}
-
 FlowScreen::FlowScreen() :
   Screen()
 {
@@ -159,8 +153,6 @@ FlowScreen::FlowScreen() :
   m_home = this;
 
   m_drawStep = 0;
-
-  lv_timer_create(timerCallback, 15, this);
 
   lv_screen_load(m_root);
 }

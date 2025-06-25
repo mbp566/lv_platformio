@@ -69,6 +69,8 @@ int main(void)
 
   initStyles();
 
+  printf("Starting");
+
   data.pv.current = 28.4;
   data.pv.voltage = 52.1;
   data.pv.power = 1400;
@@ -126,6 +128,7 @@ int main(void)
 
     lv_tick_inc(current - lastTick); // Update the tick timer. Tick is new for LVGL 9
     lastTick = current;
+    flow->redrawElectrons();
     lv_timer_handler(); // Update the UI-
   }
 }
